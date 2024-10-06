@@ -15,6 +15,7 @@ const memberSchema = new Schema(
       type: String,
       enum: ["Male", "Female", "Others"],
       default: ["Male"],
+      required: [true, "Gender is required field."],
     },
     joiningDate: {
       type: Date,

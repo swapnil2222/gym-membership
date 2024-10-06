@@ -37,11 +37,3 @@ export const deleteUser = asyncHandler(async (req, res) => {
 
   res.status(200).json({ message });
 });
-
-export default {
-  getUsers,
-  createUser,
-  getUserById,
-  updateUser,
-  deleteUser,
-};
