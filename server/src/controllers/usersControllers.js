@@ -1,35 +1,41 @@
 import asyncHandler from "express-async-handler";
+import { User } from "../models/index.js";
+import { validateUser } from "../utils/userUtils.js";
 
 export const getUsers = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: "Get all users" });
+  const users = await User.find();
+  res.status(200).json(users);
 });
 
 export const createUser = asyncHandler(async (req, res) => {
-  console.log("body", req.body);
-  const { name, email } = req.body;
-  if (!name || !email) {
-    res.status(400);
-    throw new Error("all fields are mandatory!!");
-  }
-  res.status(201).json({ message: "Create users" });
+  validateUser(req.body);
+  const newUser = new User(req.body);
+  await newUser.save();
+  res.status(201).json({ message: "User created successfuly" });
 });
 
 export const getUserById = asyncHandler(async (req, res) => {
-  console.log("body", req.body);
   const id = req.params.id;
-  res.status(200).json({ message: `Get user by id ${id}` });
+  const user = await User.findById(id);
+  res.status(200).json(user);
 });
 
 export const updateUser = asyncHandler(async (req, res) => {
-  console.log("body", req.body);
   const id = req.params.id;
-  res.status(200).json({ message: `Update user by id ${id}` });
+  const payload = req.body;
+  await User.updateOne({ _id: id }, payload);
+  res.status(200).json({ message: `User updated successfully` });
 });
 
 export const deleteUser = asyncHandler(async (req, res) => {
-  console.log("body", req.body);
   const id = req.params.id;
-  res.status(200).json({ message: `delete user by id ${id}` });
+  const response = await User.deleteOne({ _id: id });
+  const message =
+    response.deletedCount > 0
+      ? `user with id ${id} deleted successfully.`
+      : `No user found to delete.`;
+
+  res.status(200).json({ message });
 });
 
 export default {
