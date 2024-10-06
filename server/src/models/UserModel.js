@@ -1,6 +1,7 @@
-const mongoose = require("mongoose");
+import bcrypt from "bcrypt";
+import mongoose from "mongoose";
 
-const userSchema = mongoose.Schema(
+const userSchema = new mongoose.Schema(
   {
     firstName: {
       type: String,
@@ -24,7 +25,7 @@ const userSchema = mongoose.Schema(
       type: String,
       required: [true, "Please add the user phone"],
     },
-    adddress: {
+    address: {
       type: String,
       required: [true, "Please add the user address"],
     },
@@ -39,5 +40,11 @@ const userSchema = mongoose.Schema(
   },
   { timestamps: true }
 );
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
+  next();
+});
 
 export const User = mongoose.model("User", userSchema);

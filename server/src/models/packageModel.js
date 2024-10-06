@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
-const packageSchema = mongoose.Schema(
+const packageSchema = new Schema(
   {
     gymId: {
       type: mongoose.Schema.Types.ObjectId,
