@@ -4,6 +4,8 @@ import errorHandler from "./middlewares/errorHandler.js";
 import gymRoutes from "./routes/gymRoutes.js";
 import memberRoutes from "./routes/memberRoutes.js";
 import memberShipRoutes from "./routes/memberShipRoutes.js";
+import packageRoutes from "./routes/packageRoutes.js";
+import paymentRoutes from "./routes/paymentRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 
 const app = express();
@@ -20,6 +22,8 @@ app.use("/api/users", userRoutes);
 app.use("/api/gyms", gymRoutes);
 app.use("/api/members", memberRoutes);
 app.use("/api/memberships", memberShipRoutes);
+app.use("/api/packages", packageRoutes);
+app.use("/api/payments", paymentRoutes);
 
 app.use(errorHandler);
 
